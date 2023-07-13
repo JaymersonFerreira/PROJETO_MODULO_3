@@ -1,11 +1,12 @@
--- Criação das tabelas
+-- Criação da tabela "turmas"
 CREATE TABLE "turmas" (
   "id" SERIAL PRIMARY KEY,
   "nome" VARCHAR(255),
   "data_inicio" DATE,
   "data_fim" DATE
 );
---cursos
+
+--Criação da tabela "cursos"
 CREATE TABLE "cursos" (
   "id" SERIAL PRIMARY KEY,
   "nome" VARCHAR(255),
@@ -13,7 +14,8 @@ CREATE TABLE "cursos" (
   "id_turma" INTEGER,
   FOREIGN KEY ("id_turma") REFERENCES "turmas" ("id")
 );
---modulos
+
+-- Criação da tabela "modulos"
 CREATE TABLE "modulos" (
   "id" SERIAL PRIMARY KEY,
   "nome" VARCHAR(255),
@@ -23,7 +25,8 @@ CREATE TABLE "modulos" (
   "id_curso" INTEGER,
   FOREIGN KEY ("id_curso") REFERENCES "cursos" ("id")
 );
---estudantes
+
+-- Criação da tabela "estudantes"
 CREATE TABLE "estudantes" (
   "id" SERIAL PRIMARY KEY,
   "nome" VARCHAR(255),
@@ -36,7 +39,8 @@ CREATE TABLE "estudantes" (
   "id_turma" INTEGER,
   FOREIGN KEY ("id_turma") REFERENCES "turmas" ("id")
 );
---pessoas facilitadores
+
+-- Criação da tabela "pessoas_facilitadoras"
 CREATE TABLE "pessoas_facilitadoras" (
   "id" SERIAL PRIMARY KEY,
   "nome" VARCHAR(255),
@@ -50,6 +54,7 @@ CREATE TABLE "pessoas_facilitadoras" (
   FOREIGN KEY ("id_turma") REFERENCES "turmas" ("id")
 );
 
+--log de inserções de estudantes
 CREATE TABLE estudante_insert_log (
   id SERIAL PRIMARY KEY,
   estudante_id INTEGER,
@@ -58,6 +63,7 @@ CREATE TABLE estudante_insert_log (
   FOREIGN KEY (estudante_id) REFERENCES estudantes (id)
 );
 
+-- Criação da função "estudante_status_trigger"
 CREATE OR REPLACE FUNCTION estudante_status_trigger()
   RETURNS TRIGGER AS $$
 BEGIN
@@ -69,11 +75,13 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Criação do acionador "trigger_estudante_status"
 CREATE TRIGGER trigger_estudante_status
 AFTER UPDATE ON estudantes
 FOR EACH ROW
 EXECUTE FUNCTION estudante_status_trigger();
 
+-- Criação da tabela "estudante_update_log" 
 CREATE TABLE estudante_update_log (
   id SERIAL PRIMARY KEY,
   estudante_id INTEGER,
@@ -84,6 +92,7 @@ CREATE TABLE estudante_update_log (
   FOREIGN KEY (estudante_id) REFERENCES estudantes (id)
 );
 
+-- Criação da função "estudante_update_trigger"
 CREATE OR REPLACE FUNCTION estudante_update_trigger()
   RETURNS TRIGGER AS $$
 DECLARE
@@ -107,6 +116,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Criação do acionador "trigger_estudante_update"(gatilho)
 CREATE TRIGGER trigger_estudante_update
 AFTER UPDATE ON estudantes
 FOR EACH ROW
