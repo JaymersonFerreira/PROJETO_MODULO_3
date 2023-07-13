@@ -145,3 +145,23 @@ SET
   status = 'Inativo'
 WHERE id = 53;
 
+UPDATE estudantes
+SET
+  telefone = '(11) 99845286',
+  endereco = 'Rua wilson',
+  status = 'Inativo'
+WHERE id = 54;
+
+UPDATE estudantes
+SET
+  telefone = '(11) 99964886',
+  endereco = 'Rua João Palma',
+  status = 'Inativo'
+WHERE id = 55;
+
+UPDATE estudantes
+SET
+  telefone = '(11) 99985486',
+  endereco = 'Rua Dr Guião',
+  status = 'Inativo'
+WHERE id = 56;
