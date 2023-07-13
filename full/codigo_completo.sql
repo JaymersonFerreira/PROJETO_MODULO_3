@@ -278,28 +278,28 @@ VALUES
   (4, 2),
   (5, 2),
   (6, 3);
-  
+ 
 --Selecionar a quantidade total de estudantes cadastrados no banco.
 SELECT COUNT(*) FROM estudantes ORDER BY COUNT(*) DESC;
 
 --Seleciona quais pessoas facilitadoras atuam em mais de uma turma.
-SELECT pessoas_facilitadoras.nome, COUNT(pessoas_facilitadoras.id_turma)
-FROM pessoas_facilitadoras
-WHERE pessoas_facilitadoras.id_turma > 1
-GROUP BY pessoas_facilitadoras.nome;
+SELECT id_turma, COUNT(DISTINCT id_facilitador) AS quantidade_facilitadores
+FROM facilitador_turma
+GROUP BY id_turma;
 
 --Cria uma view que selecione a porcentagem de estudantes com status de evasão agrupados por turma.
-CREATE OR REPLACE VIEW evasao_turma AS
-SELECT
-  estudantes.id_turma,
-  COUNT(estudantes.id) AS total_estudantes,
-  COUNT(estudante_insert_log.estudante_id) AS total_evasao,
-  ((COUNT(estudantes.id) - COUNT(estudante_insert_log.estudante_id)) * 100.0 / COUNT(estudantes.id)) AS porcentagem_evasao
-FROM estudantes
-LEFT JOIN estudante_insert_log ON estudantes.id = estudante_insert_log.estudante_id
-GROUP BY estudantes.id_turma;
+CREATE VIEW porcentagem_evasao_por_turma AS
+SELECT t.nome AS turma_nome, COUNT(*) AS total_estudantes,
+       COUNT(CASE WHEN e.status = 'Inativo' THEN 1 END) AS estudantes_evasao,
+       (COUNT(CASE WHEN e.status = 'Inativo' THEN 1 END)::float / COUNT(*)) * 100 AS porcentagem_evasao
+FROM turmas t
+JOIN estudantes e ON t.id = e.id_turma
+GROUP BY t.nome;
 
-SELECT * FROM evasao_turma;
+SELECT * FROM porcentagem_evasao_por_turma;
+
+--drop view porcentagem_evasao_por_turma;
+
 
 
 --Pesquisa com subquery
@@ -311,7 +311,6 @@ GROUP BY cursos.id, cursos.nome;
 
 
 --Pesquisa com join com 3 tabelas
---seleciona o nome do estudante, o nome do curso e o nome do módulo em que cada estudante está matriculado.
 SELECT
   cursos.nome AS nome_curso,
   COUNT(estudantes.id) AS total_estudantes
@@ -327,7 +326,7 @@ GROUP BY
 
 --Seleciona todos os estudantes inscritos em uma turma:
 SELECT estudantes.nome FROM estudantes
-WHERE id_turma = 1;
+WHERE id_turma = 2;
 
 
 --Pesquisa com view
@@ -357,3 +356,132 @@ SELECT * FROM porcentagem_estudantes_ativos;
 --apaga a view
 drop view porcentagem_estudantes_ativos;
 
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 36;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 37;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 38;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 39;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 40;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 41;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 42;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 43;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 44;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 45;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 45;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 46;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 47;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 48;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 49;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 50;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 51;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 52;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 53;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 54;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 55;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 56;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 57;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 58;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 59;
+
+UPDATE estudantes
+SET
+  status = 'Inativo'
+WHERE id = 60;
