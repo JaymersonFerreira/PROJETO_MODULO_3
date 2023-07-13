@@ -269,6 +269,15 @@ VALUES
   ('Joãozin', '1984-01-27', 'facilitador5@resilia.com', 'Hard, Python, sql', '(28) 3767-0482', 'Rua Roxo', 2),
   ('Pedrin da Web', '1985-08-12', 'facilitador6@resilia.com', 'Soft, Soft-Skill', '(27) 2746-0356', 'Rua Marron', 2),
   ('Bernardor Berzerrar', '1984-01-27', 'facilitador7@resilia.com', 'Hard, Python, sql', '(28) 3767-1482', 'Rua Pink', 3);
+
+INSERT INTO facilitador_turma (id_facilitador, id_turma)
+VALUES
+  (1, 1),
+  (2, 1),
+  (3, 1),
+  (4, 2),
+  (5, 2),
+  (6, 3);
   
 --Selecionar a quantidade total de estudantes cadastrados no banco.
 SELECT COUNT(*) FROM estudantes ORDER BY COUNT(*) DESC;
