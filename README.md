@@ -21,7 +21,7 @@ em planilhas diferentes, dificultando muitas das vezes a extração de dados est
 ### Wedson tavares -> Colaborador.
 
 # Status do Projeto:
-Finalizado
+### Finalizado
 
 # Como acessar:
 Primeiramente crie um banco de dados de preferencia no PgAdmin, pois o código é escrito na linguagem SQL PLpgSQL, com o nome de sua preferencia.
