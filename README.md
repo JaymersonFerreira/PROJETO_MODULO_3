@@ -14,10 +14,10 @@ em planilhas diferentes, dificultando muitas das vezes a extração de dados est
 ### update -> update.sql
 
 # Pessoas Desenvolvedoras do Projeto:
-Helder Fernandes;
-Jaymerson Ferreria;
-Lucas Texeira;
-Wedson tavares.
+### Helder Fernandes -> Gestor de engajamento;
+### Jaymerson Ferreria -> Co-facilitador;
+### Lucas Texeira -> Gestor de conhecimento;
+### Wedson tavares -> Colaborador.
 
 # Status do Projeto:
 Finalizado
