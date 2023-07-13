@@ -64,10 +64,10 @@ Essa função é executada como um gatilho (trigger) após uma atualização na 
 Esse gatilho é disparado após uma atualização na tabela "estudantes" e chama a função "estudante_update_trigger" para realizar a ação de inserção de log.
 
 # Tecnologias utilizadas:
-## SQL
+### SQL
 PLpgSQL
-## Visual Studio Code e PgAdmin
+### Visual Studio Code e PgAdmin
 Editores de código 
-## Git e Github
+### Git e Github
 Controle de versionamento
 
