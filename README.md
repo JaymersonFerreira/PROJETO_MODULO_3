@@ -12,6 +12,7 @@ em planilhas diferentes, dificultando muitas das vezes a extração de dados est
 ### insert -> insert.sql
 ### select -> select.sql
 ### update -> update.sql
+### diagrama -> diagrama.png
 
 # Pessoas Desenvolvedoras do Projeto:
 ### Helder Fernandes -> Gestor de engajamento;
