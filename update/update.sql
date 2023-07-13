@@ -21,7 +21,106 @@ WHERE id = 1;
 
 UPDATE estudantes
 SET
-  telefone = '65 99024786',
+  telefone = '(11) 99024786',
   endereco = 'Rua dos prazeres',
   status = 'Inativo'
 WHERE id = 38;
+
+UPDATE estudantes
+SET
+  telefone = '(11) 99524786',
+  endereco = 'Rua Palmeiras',
+  status = 'Inativo'
+WHERE id = 39;
+
+UPDATE estudantes
+SET
+  telefone = '(11) 99084586',
+  endereco = 'Rua Italia',
+  status = 'Inativo'
+WHERE id = 39;
+
+UPDATE estudantes
+SET
+  telefone = '(11) 99984286',
+  endereco = 'Rua Jaruá',
+  status = 'Inativo'
+WHERE id = 40;
+
+UPDATE estudantes
+SET
+  telefone = '(11) 997845686',
+  endereco = 'Rua Alviverde',
+  status = 'Inativo'
+WHERE id = 41;
+
+UPDATE estudantes
+SET
+  telefone = '(11) 99369886',
+  endereco = 'Rua Marisa',
+  status = 'Inativo'
+WHERE id = 42;
+
+UPDATE estudantes
+SET
+  telefone = '(11) 99852386',
+  endereco = 'Rua Cuiaba',
+  status = 'Inativo'
+WHERE id = 43;
+
+UPDATE estudantes
+SET
+  telefone = '(11) 99569786',
+  endereco = 'Rua Sergipe',
+  status = 'Inativo'
+WHERE id = 44;
+
+UPDATE estudantes
+SET
+  telefone = '(11) 99412586',
+  endereco = 'Rua Ceara',
+  status = 'Inativo'
+WHERE id = 45;
+
+UPDATE estudantes
+SET
+  telefone = '(11) 99412586',
+  endereco = 'Rua Ceara',
+  status = 'Inativo'
+WHERE id = 45;
+
+UPDATE estudantes
+SET
+  telefone = '(11) 99564786',
+  endereco = 'Rua Iara',
+  status = 'Inativo'
+WHERE id = 46;
+
+UPDATE estudantes
+SET
+  telefone = '(11) 99657886',
+  endereco = 'Rua Jose Urbano',
+  status = 'Inativo'
+WHERE id = 47;
+
+UPDATE estudantes
+SET
+  telefone = '(11) 99023686',
+  endereco = 'Rua Javari',
+  status = 'Inativo'
+WHERE id = 48;
+
+UPDATE estudantes
+SET
+  telefone = '(11) 99102356',
+  endereco = 'Rua catetos',
+  status = 'Inativo'
+WHERE id = 49;
+
+UPDATE estudantes
+SET
+  telefone = '(11) 99963686',
+  endereco = 'Rua Portugal',
+  status = 'Inativo'
+WHERE id = 50;
+
