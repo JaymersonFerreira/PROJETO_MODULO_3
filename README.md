@@ -66,14 +66,15 @@ Esse gatilho é disparado após uma atualização na tabela "estudantes" e chama
 ## CREATE TABLE facilitador_turma: 
 Esta línea indica que se va a crear una nueva tabla llamada "facilitador_turma".
 
-## (id_facilitador INT, id_turma INT): 
-Estas dos líneas definen las columnas de la tabla. La columna "id_facilitador" es de tipo INT (entero) y la columna "id_turma" también es de tipo INT.
 
-## FOREIGN KEY (id_facilitador) REFERENCES pessoas_facilitadoras(id): 
-Esta línea define una clave foránea (foreign key) en la columna "id_facilitador". Esto significa que el valor de esta columna debe hacer referencia a la columna "id" de la tabla "pessoas_facilitadoras". En otras palabras, cada valor en "id_facilitador" debe existir como un valor válido en la columna "id" de la tabla "pessoas_facilitadoras".
+## (id_facilitador INT, id_turma INT):
+Estas duas linhas definem as colunas da tabela. A coluna "id_facilitador" é do tipo INT (número inteiro) e a coluna "id_turma" também é do tipo INT.
 
-## FOREIGN KEY (id_turma) REFERENCES turmas(id): 
-Esta línea define otra clave foránea en la columna "id_turma". Aquí, se establece que cada valor en "id_turma" debe existir como un valor válido en la columna "id" de la tabla "turmas".
+## FOREIGN KEY (id_facilitador) REFERENCES pessoas_facilitadoras(id):
+Esta linha define uma chave estrangeira (foreign key) na coluna "id_facilitador". Isso significa que o valor desta coluna deve fazer referência à coluna "id" da tabela "pessoas_facilitadoras". Em outras palavras, cada valor em "id_facilitador" deve existir como um valor válido na coluna "id" da tabela "pessoas_facilitadoras".
+
+## FOREIGN KEY (id_turma) REFERENCES turmas(id):
+Esta linha define outra chave estrangeira na coluna "id_turma". Aqui, estabelece-se que cada valor em "id_turma" deve existir como um valor válido na coluna "id" da tabela "turmas".
 
 # Tecnologias utilizadas:
 ### SQL
