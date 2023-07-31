@@ -1,4 +1,4 @@
--- Criação da tabela "turmas"
+-- Criação das tabelas
 CREATE TABLE "turmas" (
   "id" SERIAL PRIMARY KEY,
   "nome" VARCHAR(255),
@@ -6,7 +6,6 @@ CREATE TABLE "turmas" (
   "data_fim" DATE
 );
 
---Criação da tabela "cursos"
 CREATE TABLE "cursos" (
   "id" SERIAL PRIMARY KEY,
   "nome" VARCHAR(255),
@@ -15,7 +14,6 @@ CREATE TABLE "cursos" (
   FOREIGN KEY ("id_turma") REFERENCES "turmas" ("id")
 );
 
--- Criação da tabela "modulos"
 CREATE TABLE "modulos" (
   "id" SERIAL PRIMARY KEY,
   "nome" VARCHAR(255),
@@ -26,7 +24,6 @@ CREATE TABLE "modulos" (
   FOREIGN KEY ("id_curso") REFERENCES "cursos" ("id")
 );
 
--- Criação da tabela "estudantes"
 CREATE TABLE "estudantes" (
   "id" SERIAL PRIMARY KEY,
   "nome" VARCHAR(255),
@@ -40,7 +37,6 @@ CREATE TABLE "estudantes" (
   FOREIGN KEY ("id_turma") REFERENCES "turmas" ("id")
 );
 
--- Criação da tabela "pessoas_facilitadoras"
 CREATE TABLE "pessoas_facilitadoras" (
   "id" SERIAL PRIMARY KEY,
   "nome" VARCHAR(255),
@@ -54,74 +50,66 @@ CREATE TABLE "pessoas_facilitadoras" (
   FOREIGN KEY ("id_turma") REFERENCES "turmas" ("id")
 );
 
---log de inserções de estudantes
-CREATE TABLE estudante_insert_log (
-  id SERIAL PRIMARY KEY,
-  estudante_id INTEGER,
-  data_atualizacao TIMESTAMP,
-  novo_status VARCHAR(20),
-  FOREIGN KEY (estudante_id) REFERENCES estudantes (id)
-);
 
--- Criação da função "estudante_status_trigger"
-CREATE OR REPLACE FUNCTION estudante_status_trigger()
-  RETURNS TRIGGER AS $$
-BEGIN
-  IF NEW.status <> OLD.status THEN
-    INSERT INTO estudante_insert_log (estudante_id, data_atualizacao, novo_status)
-    VALUES (NEW.id, CURRENT_TIMESTAMP, NEW.status);
-  END IF;
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
--- Criação do acionador "trigger_estudante_status"
-CREATE TRIGGER trigger_estudante_status
-AFTER UPDATE ON estudantes
-FOR EACH ROW
-EXECUTE FUNCTION estudante_status_trigger();
-
--- Criação da tabela "estudante_update_log" 
+-- Criação da tabela estudante_update_log
 CREATE TABLE estudante_update_log (
-  id SERIAL PRIMARY KEY,
-  estudante_id INTEGER,
-  data_atualizacao TIMESTAMP,
-  coluna_afetada VARCHAR(255),
-  valor_anterior TEXT,
-  valor_atual TEXT,
-  FOREIGN KEY (estudante_id) REFERENCES estudantes (id)
+  id_estudante INTEGER,
+  data_update TIMESTAMP,
+  novo_status VARCHAR(50)
 );
 
--- Criação da tabela "estudante_update_log" 
-CREATE OR REPLACE FUNCTION estudante_update_trigger()
-  RETURNS TRIGGER AS $$
-DECLARE
-  nome_coluna TEXT;
-  valor_anterior TEXT;
-  valor_atual TEXT;
+--select * from estudante_update_log;
+
+-- Criação da função e gatilho para atualização do atributo status
+CREATE OR REPLACE FUNCTION estudante_update_status_log()
+RETURNS TRIGGER
+LANGUAGE PLPGSQL
+AS $$
 BEGIN
-  IF TG_OP = 'UPDATE' THEN
-    FOR nome_coluna IN SELECT column_name FROM information_schema.columns WHERE table_name = 'estudantes' LOOP
-      valor_anterior := OLD[nome_coluna]::text;
-      valor_atual := NEW[nome_coluna]::text;
-      
-      IF valor_anterior <> valor_atual THEN
-        INSERT INTO estudante_update_log (estudante_id, data_atualizacao, coluna_afetada, valor_anterior, valor_atual)
-        VALUES (NEW.id, CURRENT_TIMESTAMP, nome_coluna, valor_anterior, valor_atual);
-      END IF;
-    END LOOP;
-  END IF;
-  
+  -- Insere um registro na tabela estudante_update_log
+  INSERT INTO estudante_update_log (id_estudante, data_update, novo_status)
+  VALUES (NEW.id, current_timestamp, NEW.status);
+
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$;
 
-
--- Criação do acionador "trigger_estudante_update"(gatilho)
-CREATE TRIGGER trigger_estudante_update
-AFTER UPDATE ON estudantes
+CREATE TRIGGER UPDATE_STATUS_LOG_TRIGGER
+BEFORE UPDATE ON estudantes
 FOR EACH ROW
-EXECUTE FUNCTION estudante_update_trigger();
+EXECUTE FUNCTION estudante_update_status_log();
+
+
+CREATE TABLE estudante_insert_log (
+  id_estudante INTEGER,
+  data_insert TIMESTAMP
+);
+
+--select * from estudante_insert_log;
+
+CREATE OR REPLACE FUNCTION estudante_log()
+RETURNS TRIGGER
+LANGUAGE PLPGSQL
+AS $$
+BEGIN
+
+  INSERT INTO estudante_insert_log (id_estudante, data_insert) VALUES (new.id, current_timestamp);
+  RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER INSERT_LOG_TRIGGER
+AFTER INSERT ON estudantes 
+FOR EACH ROW
+EXECUTE PROCEDURE estudante_log();
+
+CREATE TABLE facilitador_turma (
+  id_facilitador INT,
+  id_turma INT,
+  FOREIGN KEY (id_facilitador) REFERENCES pessoas_facilitadoras(id),
+  FOREIGN KEY (id_turma) REFERENCES turmas(id)
+);
+
 
 -- Inserção dos dados
 INSERT INTO turmas (nome, data_inicio, data_fim)
@@ -171,9 +159,9 @@ VALUES
   ('Gustavo Daher', '997.547.630-97', '2000-01-18', 'estudante14@resilia.com', '(55) 3718-9855', 'Rua 5', 'Ativo', 1),
   ('Helder Fernandes', '721.031.490-33', '2000-07-06', 'estudante15@resilia.com', '(95) 3780-9426', 'Rua 2', 'Ativo', 1),
   ('Jaqueline dos Santos', '852.324.630-47', '2000-06-07', 'estudante16@resilia.com', '(84) 2069-8172', 'Rua 11', 'Ativo', 1),
-  ('Jaymerson Ferreira', '557.722.240-00', '2000-04-16', 'estudante17@resilia.com', '(74) 3638-7377', 'Rua 5', 'Ativo', 1),
   ('Jefferson Cezar', '301.009.440-00', '2000-03-10', 'estudante18@resilia.com', '(61) 2661-5488', 'Rua IO', 'Ativo', 1),
   ('João Vitor', '635.654.560-78', '2000-02-13', 'estudante19@resilia.com', '(82) 2486-6557', 'Rua POI', 'Ativo', 1),
+  ('Jaymerson Ferreira', '557.722.240-00', '2000-04-16', 'estudante17@resilia.com', '(74) 3638-7377', 'Rua 5', 'Ativo', 1),
   ('Joel Nunes', '066.291.830-45', '2000-08-17', 'estudante20@resilia.com', '(98) 3861-5293', 'Rua PIU-PIU', 'Ativo', 1),
   ('José Wedson', '290.837.620-25', '2000-09-30', 'estudante21@resilia.com', '(53) 2951-6575', 'Rua ARROZ', 'Ativo', 1),
   ('Josean Pereira', '572.482.070-63', '2000-10-11', 'estudante22@resilia.com', '(66) 2676-7723', 'Rua DO CHINA', 'Ativo', 1),
@@ -278,84 +266,9 @@ VALUES
   (4, 2),
   (5, 2),
   (6, 3);
- 
---Selecionar a quantidade total de estudantes cadastrados no banco.
-SELECT COUNT(*) FROM estudantes ORDER BY COUNT(*) DESC;
+  
 
---Seleciona quais pessoas facilitadoras atuam em mais de uma turma.
-SELECT id_turma, COUNT(DISTINCT id_facilitador) AS quantidade_facilitadores
-FROM facilitador_turma
-GROUP BY id_turma;
-
---Cria uma view que selecione a porcentagem de estudantes com status de evasão agrupados por turma.
-CREATE VIEW porcentagem_evasao_por_turma AS
-SELECT t.nome AS turma_nome, COUNT(*) AS total_estudantes,
-       COUNT(CASE WHEN e.status = 'Inativo' THEN 1 END) AS estudantes_evasao,
-       (COUNT(CASE WHEN e.status = 'Inativo' THEN 1 END)::float / COUNT(*)) * 100 AS porcentagem_evasao
-FROM turmas t
-JOIN estudantes e ON t.id = e.id_turma
-GROUP BY t.nome;
-
-SELECT * FROM porcentagem_evasao_por_turma;
-
---drop view porcentagem_evasao_por_turma;
-
-
-
---Pesquisa com subquery
---Número total de estudantes matriculados em cada curso.
-SELECT cursos.nome, COUNT(estudantes.id)
-FROM cursos 
-LEFT JOIN estudantes ON cursos.id = estudantes.id_turma
-GROUP BY cursos.id, cursos.nome;
-
-
---Pesquisa com join com 3 tabelas
-SELECT
-  cursos.nome AS nome_curso,
-  COUNT(estudantes.id) AS total_estudantes
-FROM
-  cursos
-JOIN
-  turmas ON cursos.id_turma = turmas.id
-LEFT JOIN
-  estudantes ON estudantes.id_turma = turmas.id
-GROUP BY
-  cursos.nome;
-
-
---Seleciona todos os estudantes inscritos em uma turma:
-SELECT estudantes.nome FROM estudantes
-WHERE id_turma = 2;
-
-
---Pesquisa com view
---Cria uma view que pega os dados da tabela de estudantes e calcule a contagem de estudantes ativos por turma
-CREATE OR REPLACE VIEW porcentagem_estudantes_ativos AS
-SELECT
-  turmas.nome AS nome_turma,
-  COUNT(estudantes.id) AS total_estudantes,
-  COUNT(estudante_insert_log.estudante_id) AS total_evasao,
-  CASE
-    WHEN COUNT(estudantes.id) > 0
-      THEN (1 - (COUNT(estudante_insert_log.estudante_id)::decimal / COUNT(estudantes.id)::decimal)) * 100
-    ELSE 0
-  END AS porcentagem_ativos
-FROM
-  turmas
-LEFT JOIN
-  estudantes ON turmas.id = estudantes.id_turma
-LEFT JOIN
-  estudante_insert_log ON estudantes.id = estudante_insert_log.estudante_id
-GROUP BY
-  turmas.nome;
-
---chama a view
-SELECT * FROM porcentagem_estudantes_ativos;
-
---apaga a view
-drop view porcentagem_estudantes_ativos;
-
+--ATUALIZA OS STATUS
 UPDATE estudantes
 SET
   status = 'Inativo'
@@ -485,3 +398,68 @@ UPDATE estudantes
 SET
   status = 'Inativo'
 WHERE id = 60;
+ 
+--Selecionar a quantidade total de estudantes cadastrados no banco.
+SELECT COUNT(*) FROM estudantes ORDER BY COUNT(*);
+
+--Seleciona quais pessoas facilitadoras atuam em mais de uma turma.
+SELECT id_turma, COUNT(DISTINCT id_facilitador) AS quantidade_facilitadores
+FROM facilitador_turma
+GROUP BY id_turma;
+
+--Cria uma view que selecione a porcentagem de estudantes com status de evasão agrupados por turma.
+CREATE VIEW porcentagem_evasao_por_turma AS
+SELECT t.nome AS turma_nome, COUNT(*) AS total_estudantes,
+       COUNT(CASE WHEN e.status = 'Inativo' THEN 1 END) AS estudantes_evasao,
+       (COUNT(CASE WHEN e.status = 'Inativo' THEN 1 END)::float / COUNT(*)) * 100 AS porcentagem_evasao
+FROM turmas t
+JOIN estudantes e ON t.id = e.id_turma
+GROUP BY t.nome;
+
+SELECT * FROM porcentagem_evasao_por_turma;
+
+
+--drop view porcentagem_evasao_por_turma;
+
+
+--Pesquisa com subquery
+--Número total de estudantes matriculados em cada curso.
+SELECT cursos.nome, COUNT(estudantes.id)
+FROM cursos 
+LEFT JOIN estudantes ON cursos.id = estudantes.id_turma
+GROUP BY cursos.id, cursos.nome;
+
+
+--Pesquisa com join com 3 tabelas
+SELECT
+  cursos.nome AS nome_curso,
+  COUNT(estudantes.id) AS total_estudantes
+FROM
+  cursos
+JOIN
+  turmas ON cursos.id_turma = turmas.id
+LEFT JOIN
+  estudantes ON estudantes.id_turma = turmas.id
+GROUP BY
+  cursos.nome;
+
+
+--Seleciona todos os estudantes inscritos em uma turma:
+SELECT estudantes.nome FROM estudantes
+WHERE id_turma = 2;
+
+
+--Pesquisa com view
+--Cria uma view que pega os dados da tabela de estudantes e calcule a contagem de estudantes ativos por turma
+CREATE VIEW estudantes_ativos_por_turma AS
+SELECT t.nome AS turma_nome, COUNT(*) AS total_estudantes_ativos
+FROM turmas t
+JOIN estudantes e ON t.id = e.id_turma
+WHERE e.status = 'Ativo'
+GROUP BY t.nome;
+
+SELECT * FROM estudantes_ativos_por_turma;
+
+
+--apaga a view
+drop view porcentagem_estudantes_ativos;
