@@ -1,6 +1,6 @@
  
 --Selecionar a quantidade total de estudantes cadastrados no banco.
-SELECT COUNT(*) FROM estudantes ORDER BY COUNT(*) DESC;
+SELECT COUNT(*) FROM estudantes ORDER BY COUNT(*);
 
 --Seleciona quais pessoas facilitadoras atuam em mais de uma turma.
 SELECT id_turma, COUNT(DISTINCT id_facilitador) AS quantidade_facilitadores
@@ -18,8 +18,8 @@ GROUP BY t.nome;
 
 SELECT * FROM porcentagem_evasao_por_turma;
 
---drop view porcentagem_evasao_por_turma;
 
+--drop view porcentagem_evasao_por_turma;
 
 
 --Pesquisa com subquery
@@ -51,27 +51,15 @@ WHERE id_turma = 2;
 
 --Pesquisa com view
 --Cria uma view que pega os dados da tabela de estudantes e calcule a contagem de estudantes ativos por turma
-CREATE OR REPLACE VIEW porcentagem_estudantes_ativos AS
-SELECT
-  turmas.nome AS nome_turma,
-  COUNT(estudantes.id) AS total_estudantes,
-  COUNT(estudante_insert_log.estudante_id) AS total_evasao,
-  CASE
-    WHEN COUNT(estudantes.id) > 0
-      THEN (1 - (COUNT(estudante_insert_log.estudante_id)::decimal / COUNT(estudantes.id)::decimal)) * 100
-    ELSE 0
-  END AS porcentagem_ativos
-FROM
-  turmas
-LEFT JOIN
-  estudantes ON turmas.id = estudantes.id_turma
-LEFT JOIN
-  estudante_insert_log ON estudantes.id = estudante_insert_log.estudante_id
-GROUP BY
-  turmas.nome;
+CREATE VIEW estudantes_ativos_por_turma AS
+SELECT t.nome AS turma_nome, COUNT(*) AS total_estudantes_ativos
+FROM turmas t
+JOIN estudantes e ON t.id = e.id_turma
+WHERE e.status = 'Ativo'
+GROUP BY t.nome;
 
---chama a view
-SELECT * FROM porcentagem_estudantes_ativos;
+SELECT * FROM estudantes_ativos_por_turma;
+
 
 --apaga a view
 drop view porcentagem_estudantes_ativos;
