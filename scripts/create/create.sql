@@ -109,4 +109,3 @@ CREATE TABLE facilitador_turma (
   FOREIGN KEY (id_facilitador) REFERENCES pessoas_facilitadoras(id),
   FOREIGN KEY (id_turma) REFERENCES turmas(id)
 );
-
