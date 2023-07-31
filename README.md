@@ -8,6 +8,27 @@ Para isso, são armazenadas diversas informações do braço de
 ensino da empresa como dados sobre os estudantes, pessoas facilitadoras,turmas, módulos e cursos em planilhas. Essas informações são colocadas
 em planilhas diferentes, dificultando muitas das vezes a extração de dados estratégicos para a empresa.
 
+## Os Arquivos estão separados por pasta(diretórios), cada pasta contem um arquivo sql
+- create/create.sql
+- delete/delete.sql
+- full/código1_completo.sql
+- insert/insert.sql
+- select/select.sql
+- update/update.sql
+- diagrama/diagrama.png
+
+## Pessoas Desenvolvedoras do Projeto:
+Co-facilitador:
+- Jaymerson Ferreria
+  
+Gestor de conhecimento:
+- Lucas Texeira
+  
+Gestor de engajamento:
+- Helder Fernandes:
+  
+Colaborador:
+- Wedson tavares
 
 # Descrição das Tabelas
 ## turmas
@@ -101,25 +122,6 @@ Colunas:
 - id_facilitador (INT): Chave estrangeira referenciando a coluna id da tabela pessoas_facilitadoras.
 - id_turma (INT): Chave estrangeira referenciando a coluna id da tabela turmas.
 
-
-## Os Arquivos estão separados por pasta(diretórios), cada pasta contem um arquivo sql
-- create/create.sql
-- delete/delete.sql
-- full/código1_completo.sql
-- insert/insert.sql
-- select/select.sql
-- update/update.sql
-- diagrama/diagrama.png
-
-## Pessoas Desenvolvedoras do Projeto:
-- Helder Fernandes/Gestor de engajamento;
-- Jaymerson Ferreria/Co-facilitador;
-- Lucas Texeira/Gestor de conhecimento;
-- Wedson tavares/Colaborador.
-
-## Status do Projeto:
-- Finalizado
-
 ## Como Executar o Código
 1. Instalação do PostgreSQL e pgAdmin:
 Antes de executar o código, certifique-se de ter o PostgreSQL instalado em seu sistema, juntamente com o pgAdmin para gerenciamento do banco de dados.
@@ -161,5 +163,8 @@ Editores de código
 
 Controle de versionamento
 - Git e Github
+
+## Status do Projeto:
+- Finalizado
 
 
